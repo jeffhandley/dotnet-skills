@@ -108,21 +108,37 @@ run_one_eval() {
   mkdir -p "$BASELINE_DIR" "$SKILLED_DIR"
 
   if [ ! -d "$SKILL_DIR" ]; then
+    # Skipped: this eval (commonly `agent.*`) targets an orchestrator agent or
+    # otherwise does not map to a single skill directory under
+    # plugins/<plugin>/skills/<eval-name>. Such evals are out of scope for the
+    # skill-vs-baseline pipeline (e.g. they declare `environment.skills`
+    # explicitly and would not produce a meaningful 0-skill baseline).
     echo "SKIP: skill dir not found: $SKILL_DIR" > "$LOG"
     echo -e "  ${YELLOW}⚠${NC} $EVAL_PLUGIN/$EVAL_NAME (skipped — no skill dir)"
     echo "skip" > "$STATUS_DIR/$EVAL_PLUGIN--$EVAL_NAME"
     return
   fi
 
+  # Empty dir used as `--skill-dir` for the baseline so vally discovers zero
+  # skills (without it, vally walks up to the repo's .vally.yaml and loads
+  # every skill under plugins/, contaminating the baseline). One dir per eval
+  # to avoid any cross-run contention when running in parallel.
+  local EMPTY_SKILL_DIR
+  EMPTY_SKILL_DIR=$(mktemp -d -t vally-empty-skills-XXXXXX)
+  # Cleanup on every exit path (including `set -e` aborts inside the
+  # log-capture block below, e.g. if `node adapt.mjs` exits non-zero).
+  trap 'rm -rf "$EMPTY_SKILL_DIR"' RETURN
+
   echo -e "  ${BOLD}▶${NC} $EVAL_PLUGIN/$EVAL_NAME — baseline..." >&2
 
   {
     echo "=== $EVAL_PLUGIN/$EVAL_NAME ==="
 
-    # Baseline
+    # Baseline: no skills available to the agent.
     echo "--- Baseline run ---"
     $VALLY eval \
       --eval-spec "$EVAL_SPEC" \
+      --skill-dir "$EMPTY_SKILL_DIR" \
       --model "$MODEL" \
       --runs "$RUNS" --workers "$WORKERS" \
       --skip-validate \
@@ -132,7 +148,7 @@ run_one_eval() {
 
     echo -e "  ${BOLD}▶${NC} $EVAL_PLUGIN/$EVAL_NAME — skilled..." >&2
 
-    # Skilled
+    # Skilled: exactly the one skill under evaluation.
     echo "--- Skilled run ---"
     $VALLY eval \
       --eval-spec "$EVAL_SPEC" \
