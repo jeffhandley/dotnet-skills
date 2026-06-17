@@ -30,18 +30,22 @@ concurrency:
   group: gh-aw-${{ github.workflow }}-${{ github.event.issue.number || inputs.issue_number }}
 
 # ###############################################################
-# Select a PAT from the pool and override COPILOT_GITHUB_TOKEN.
-# When org-level billing is available, this will be removed.
-# See `shared/pat_pool.README.md` for more information.
+# Override COPILOT_GITHUB_TOKEN with a random PAT from the pool.
+# Ensure this agentic jobs run from the isolated
+# `copilot-pat-pool` environment where the PAT pool is available.
+# This stop-gap will be removed when org billing is available.
+# See: .github/workflows/shared/pat_pool.README.md for more info.
 # ###############################################################
 imports:
   - shared/pat_pool.md
 
+environment: copilot-pat-pool
+
 engine:
   id: copilot
   env:
-    # If none of the COPILOT_GITHUB_TOKEN[_#] pool secrets were selected, the default COPILOT_GITHUB_TOKEN is used.
-    COPILOT_GITHUB_TOKEN: ${{ case(needs.pat_pool.outputs.pat_number == '0', secrets.COPILOT_GITHUB_TOKEN, needs.pat_pool.outputs.pat_number == '1', secrets.COPILOT_GITHUB_TOKEN_2, needs.pat_pool.outputs.pat_number == '2', secrets.COPILOT_GITHUB_TOKEN_3, needs.pat_pool.outputs.pat_number == '3', secrets.COPILOT_GITHUB_TOKEN_4, needs.pat_pool.outputs.pat_number == '4', secrets.COPILOT_GITHUB_TOKEN_5, needs.pat_pool.outputs.pat_number == '5', secrets.COPILOT_GITHUB_TOKEN_6, needs.pat_pool.outputs.pat_number == '6', secrets.COPILOT_GITHUB_TOKEN_7, needs.pat_pool.outputs.pat_number == '7', secrets.COPILOT_GITHUB_TOKEN_8, secrets.COPILOT_GITHUB_TOKEN) }}
+    
+    COPILOT_GITHUB_TOKEN: ${{ case(needs.pat_pool.outputs.pat_number == '0', secrets.COPILOT_PAT_0, needs.pat_pool.outputs.pat_number == '1', secrets.COPILOT_PAT_1, needs.pat_pool.outputs.pat_number == '2', secrets.COPILOT_PAT_2, needs.pat_pool.outputs.pat_number == '3', secrets.COPILOT_PAT_3, needs.pat_pool.outputs.pat_number == '4', secrets.COPILOT_PAT_4, needs.pat_pool.outputs.pat_number == '5', secrets.COPILOT_PAT_5, needs.pat_pool.outputs.pat_number == '6', secrets.COPILOT_PAT_6, needs.pat_pool.outputs.pat_number == '7', secrets.COPILOT_PAT_7, needs.pat_pool.outputs.pat_number == '8', secrets.COPILOT_PAT_8, needs.pat_pool.outputs.pat_number == '9', secrets.COPILOT_PAT_9, 'NO COPILOT PAT AVAILABLE') }}
 
 permissions:
   contents: read

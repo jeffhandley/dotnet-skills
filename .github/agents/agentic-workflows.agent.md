@@ -31,7 +31,7 @@ Workflows may optionally include:
 - Workflow files: `.github/workflows/*.md` and `.github/workflows/**/*.md`
 - Workflow lock files: `.github/workflows/*.lock.yml`
 - Shared components: `.github/workflows/shared/*.md`
-- Configuration: https://github.com/github/gh-aw/blob/v0.71.5/.github/aw/github-agentic-workflows.md
+- Configuration: .github/aw/github-agentic-workflows.md
 
 ## Problems This Solves
 
@@ -53,7 +53,7 @@ When you interact with this agent, it will:
 ### Create New Workflow
 **Load when**: User wants to create a new workflow from scratch, add automation, or design a workflow that doesn't exist yet
 
-**Prompt file**: https://github.com/github/gh-aw/blob/v0.71.5/.github/aw/create-agentic-workflow.md
+**Prompt file**: .github/aw/create-agentic-workflow.md
 
 **Use cases**:
 - "Create a workflow that triages issues"
@@ -63,7 +63,7 @@ When you interact with this agent, it will:
 ### Update Existing Workflow  
 **Load when**: User wants to modify, improve, or refactor an existing workflow
 
-**Prompt file**: https://github.com/github/gh-aw/blob/v0.71.5/.github/aw/update-agentic-workflow.md
+**Prompt file**: .github/aw/update-agentic-workflow.md
 
 **Use cases**:
 - "Add web-fetch tool to the issue-classifier workflow"
@@ -73,7 +73,7 @@ When you interact with this agent, it will:
 ### Debug Workflow  
 **Load when**: User needs to investigate, audit, debug, or understand a workflow, troubleshoot issues, analyze logs, or fix errors
 
-**Prompt file**: https://github.com/github/gh-aw/blob/v0.71.5/.github/aw/debug-agentic-workflow.md
+**Prompt file**: .github/aw/debug-agentic-workflow.md
 
 **Use cases**:
 - "Why is this workflow failing?"
@@ -83,7 +83,7 @@ When you interact with this agent, it will:
 ### Upgrade Agentic Workflows
 **Load when**: User wants to upgrade workflows to a new gh-aw version or fix deprecations
 
-**Prompt file**: https://github.com/github/gh-aw/blob/v0.71.5/.github/aw/upgrade-agentic-workflows.md
+**Prompt file**: .github/aw/upgrade-agentic-workflows.md
 
 **Use cases**:
 - "Upgrade all workflows to the latest version"
@@ -93,7 +93,7 @@ When you interact with this agent, it will:
 ### Create a Report-Generating Workflow
 **Load when**: The workflow being created or updated produces reports — recurring status updates, audit summaries, analyses, or any structured output posted as a GitHub issue, discussion, or comment
 
-**Prompt file**: https://github.com/github/gh-aw/blob/v0.71.5/.github/aw/report.md
+**Prompt file**: .github/aw/report.md
 
 **Use cases**:
 - "Create a weekly CI health report"
@@ -103,7 +103,7 @@ When you interact with this agent, it will:
 ### Create Shared Agentic Workflow
 **Load when**: User wants to create a reusable workflow component or wrap an MCP server
 
-**Prompt file**: https://github.com/github/gh-aw/blob/v0.71.5/.github/aw/create-shared-agentic-workflow.md
+**Prompt file**: .github/aw/create-shared-agentic-workflow.md
 
 **Use cases**:
 - "Create a shared component for Notion integration"
@@ -113,7 +113,7 @@ When you interact with this agent, it will:
 ### Fix Dependabot PRs
 **Load when**: User needs to close or fix open Dependabot PRs that update dependencies in generated manifest files (`.github/workflows/package.json`, `.github/workflows/requirements.txt`, `.github/workflows/go.mod`)
 
-**Prompt file**: https://github.com/github/gh-aw/blob/v0.71.5/.github/aw/dependabot.md
+**Prompt file**: .github/aw/dependabot.md
 
 **Use cases**:
 - "Fix the open Dependabot PRs for npm dependencies"
@@ -123,7 +123,7 @@ When you interact with this agent, it will:
 ### Analyze Test Coverage
 **Load when**: The workflow reads, analyzes, or reports test coverage — whether triggered by a PR, a schedule, or a slash command. Always consult this prompt before designing the coverage data strategy.
 
-**Prompt file**: https://github.com/github/gh-aw/blob/v0.71.5/.github/aw/test-coverage.md
+**Prompt file**: .github/aw/test-coverage.md
 
 **Use cases**:
 - "Create a workflow that comments coverage on PRs"
@@ -133,7 +133,7 @@ When you interact with this agent, it will:
 ### CLI Commands Reference
 **Load when**: The user asks how to run, compile, debug, or manage workflows from the command line; needs the MCP tool equivalent of a `gh aw` command; or is in a restricted environment (e.g., Copilot Cloud) without direct CLI access.
 
-**Reference file**: https://github.com/github/gh-aw/blob/v0.71.5/.github/aw/cli-commands.md
+**Reference file**: .github/aw/cli-commands.md
 
 **Use cases**:
 - "How do I trigger workflow X on the main branch?"
@@ -146,7 +146,7 @@ When you interact with this agent, it will:
 When a user interacts with you:
 
 1. **Identify the task type** from the user's request
-2. **Load the appropriate prompt** from the GitHub repository URLs listed above
+2. **Load the appropriate prompt** from the repository paths listed above
 3. **Follow the loaded prompt's instructions** exactly
 4. **If uncertain**, ask clarifying questions to determine the right prompt
 
@@ -185,12 +185,71 @@ gh aw compile --validate
 
 ## Important Notes
 
-- Always reference the instructions file at https://github.com/github/gh-aw/blob/v0.71.5/.github/aw/github-agentic-workflows.md for complete documentation
+- Always reference the instructions file at `.github/aw/github-agentic-workflows.md` for complete documentation
 - Use the MCP tool `agentic-workflows` when running in GitHub Copilot Cloud
 - Workflows must be compiled to `.lock.yml` files before running in GitHub Actions
 - **Bash tools are enabled by default** - Don't restrict bash commands unnecessarily since workflows are sandboxed by the AWF
 - Follow security best practices: minimal permissions, explicit network access, no template injection
-- **Network configuration**: Use ecosystem identifiers (`node`, `python`, `go`, etc.) or explicit FQDNs in `network.allowed`. Bare shorthands like `npm` or `pypi` are **not** valid. See https://github.com/github/gh-aw/blob/v0.71.5/.github/aw/network.md for the full list of valid ecosystem identifiers and domain patterns.
+- **Network configuration**: Use ecosystem identifiers (`node`, `python`, `go`, etc.) or explicit FQDNs in `network.allowed`. Bare shorthands like `npm` or `pypi` are **not** valid. See `.github/aw/network.md` for the full list of valid ecosystem identifiers and domain patterns.
 - **Single-file output**: When creating a workflow, produce exactly **one** workflow `.md` file. Do not create separate documentation files (architecture docs, runbooks, usage guides, etc.). If documentation is needed, add a brief `## Usage` section inside the workflow file itself.
 - **Triggering runs**: Always use `gh aw run <workflow-name>` to trigger a workflow on demand — not `gh workflow run <file>.lock.yml`. `gh aw run` handles workflow resolution by short name, input parsing and validation, and correct run-tracking for agentic workflows. Use `--ref <branch>` to run on a specific branch.
-- **CLI commands reference**: For a complete guide on all `gh aw` commands and their MCP tool equivalents (for restricted environments), see https://github.com/github/gh-aw/blob/v0.71.5/.github/aw/cli-commands.md
+- **CLI commands reference**: For a complete guide on all `gh aw` commands and their MCP tool equivalents (for restricted environments), see `.github/aw/cli-commands.md`
+- **Repository-specific requirements**: There are multiple sets of repository-specific instructions below that must be respected. They affect workflow authoring, updates, compilation, and reviews.
+
+## Repository-Specific Requirements: Copilot PAT Pool
+
+**⚠️ MANDATORY**: Every agentic workflow in this repository **must** utilize the Copilot PAT Pool in the `copilot-pat-pool` environment as detailed in `.github/workflows/shared/pat_pool.README.md`. This mechanism selects a random Copilot PAT from a numbered pool of environment secrets to avoid rate-limiting from a single shared PAT, while preventing agentic workflows from having access to secrets from other environments.
+
+When **creating** or **updating** an agentic workflow, always include the following frontmatter that integrates the PAT pool. This should be used verbatim when first added.
+
+```yml
+# ###############################################################
+# Override COPILOT_GITHUB_TOKEN with a random PAT from the pool.
+# Ensure this agentic jobs run from the isolated
+# `copilot-pat-pool` environment where the PAT pool is available.
+# This stop-gap will be removed when org billing is available.
+# See: .github/workflows/shared/pat_pool.README.md for more info.
+# ###############################################################
+imports:
+  - shared/pat_pool.md
+
+environment: copilot-pat-pool
+
+engine:
+  id: copilot
+  env:
+    COPILOT_GITHUB_TOKEN: ${{ case(needs.pat_pool.outputs.pat_number == '0', secrets.COPILOT_PAT_0, needs.pat_pool.outputs.pat_number == '1', secrets.COPILOT_PAT_1, needs.pat_pool.outputs.pat_number == '2', secrets.COPILOT_PAT_2, needs.pat_pool.outputs.pat_number == '3', secrets.COPILOT_PAT_3, needs.pat_pool.outputs.pat_number == '4', secrets.COPILOT_PAT_4, needs.pat_pool.outputs.pat_number == '5', secrets.COPILOT_PAT_5, needs.pat_pool.outputs.pat_number == '6', secrets.COPILOT_PAT_6, needs.pat_pool.outputs.pat_number == '7', secrets.COPILOT_PAT_7, needs.pat_pool.outputs.pat_number == '8', secrets.COPILOT_PAT_8, needs.pat_pool.outputs.pat_number == '9', secrets.COPILOT_PAT_9, 'NO COPILOT PAT AVAILABLE') }}
+```
+
+When the workflow is being updated by hand, the `engine.env.COPILOT_GITHUB_TOKEN` may be reformatted to use a multi-line YAML string for the expression if desired for improved readability.
+
+If other `engine` properties are customized for the workflow, that customization will need to be added into this same `engine` block and hand-editing can rearrange the PAT pool frontmatter and comment for ideal maintainability.
+
+## Repository-Specific Requirements: Schedule Seed
+
+When compiling a workflow that uses **fuzzy scheduling** (e.g., `schedule: weekly on monday around 9:00`), or when recompiling all workflows, always pass the `--schedule-seed` flag with this repository's identity:
+
+```bash
+# Single workflow with fuzzy scheduling
+gh aw compile .github/workflows/<name>.md --schedule-seed dotnet/skills
+
+# Recompile all workflows
+gh aw compile --schedule-seed dotnet/skills
+```
+
+The schedule seed ensures fuzzy schedule times are deterministic for this repository -- the same seed always produces the same cron offsets, preventing unnecessary lock file churn across compilations. By default, `gh aw compile` assumes an 'origin' remote or a single remote; by specifying the `--schedule-seed` repo, the times are calculated correctly even when working against a fork or with the remote named differently.
+
+## Repository-Specific Requirements: Frontmatter Ordering
+
+When **creating** or **updating** an agentic workflow's frontmatter, follow this ordering convention. This keeps security-sensitive configuration at the top where it's most visible to maintainers and reviewers, and groups the PAT pool boilerplate at the bottom where it stays out of the way.
+
+### Frontmatter section ordering
+
+Arrange top-level frontmatter keys in this order within the `---` markers:
+
+1. **Descriptive** -- `id`, `name`, `description`, etc.
+2. **Security** -- `permissions`, `safe_outputs`, `network`, `roles`, etc.
+3. **Environment** -- `resources`, `dependencies`, `runtimes`, `features`, environment variables, `services`, `container`, `checkout`, etc.
+4. **Execution** -- conditions (`if`), `concurrency`, `bots`/`skip-bots`, triggers (`on`), `jobs`, `engine`, etc.
+
+The PAT pool integration naturally falls into the **Execution** group at the bottom, including the `environment` property that defines the _execution environment_ for the agentic job. Keep the PAT pool content together as the last items in the frontmatter.
