@@ -48,11 +48,11 @@ Team members providing PATs for workflows should set weekly recurring reminders 
 
 For a PAT pool that is specific to an environment, PATs can be added to repositories as **Environment Secrets** for the environment created above. _This requires repo admin permission_.
 
-* **Settings** >
-   * **Environments** >
-      * **copilot-pat-pool** (or other environment name) >
-         * **Add environment secret** (or edit your existing secret)
-            * Enter your secret name of `COPILOT_PAT_{0-9}` and paste in your PAT
+- **Settings** >
+   - **Environments** >
+      - **copilot-pat-pool** (or other environment name) >
+         - **Add environment secret** (or edit your existing secret)
+            - Enter your secret name of `COPILOT_PAT_{0-9}` and paste in your PAT
 
 This can also be accomplished using the `gh` CLI, specifying the repo and environment arguments.
 
