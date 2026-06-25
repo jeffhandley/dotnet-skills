@@ -186,7 +186,7 @@ The `pat_pool` import integration requires that the workflow's compilation resul
 .github\workflows\<workflow-name>.md:1:1: error: failed to generate YAML: failed to build and validate jobs: job dependency validation failed: job 'pat_pool' depends on non-existent job 'pre_activation'
 ```
 
-To work around this, add `on.permissions: {}` to your workflow, which forces a no-op `pre_activation` job to be generated.
+To work around this, add `on.permissions: {}` (or another `on.*` setting that forces `pre_activation`, such as `skip-if-no-match`) to your workflow, which forces a no-op `pre_activation` job to be generated.
 
 ```yml
 on:
